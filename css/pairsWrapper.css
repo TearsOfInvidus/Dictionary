@@ -1,0 +1,48 @@
+.pairs-wrapper{
+    margin-top: 20px;
+    width: 50%;
+    height: 800px;
+    overflow: scroll;
+}
+.pairs-wrapper::-webkit-scrollbar {
+    display: none;
+  }
+
+.pair-item{
+    display: flex;
+    justify-content: space-between;
+    background-color: white;
+    padding: 5px;
+    height: 40px;
+    margin-top: 10px;
+    border-radius: 5px;
+}
+
+.WoTrText{
+    display: flex;
+    align-items: center;
+    height: 100%;
+    width: 80%;
+}
+
+.buttons{
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    height: 100%;
+    width: 20%;
+}
+
+.btn-checked{
+    height: 100%;
+    width: 40px;
+}
+
+.btn-delete{
+    height: 100%;
+    width: 100px;
+}
+
+.checked{
+    background-color: gray;
+}

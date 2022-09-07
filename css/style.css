@@ -1,0 +1,53 @@
+@import url(pairsWrapper.css);
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.flex-wrapper{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: blueviolet;
+    padding: 25px;
+}
+
+.menu{
+    width: 50%;
+    background-color: white;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.add-pair-wrapper{
+    display: flex;
+    justify-content: space-between;
+    padding: 5px;
+    height: 40px;
+}
+
+.input-wrapper{
+    display: flex;
+    justify-content: space-around;
+    width: 70%;
+    height: 100%;
+}
+
+.input-wrapper input{
+    width: 49%;
+    height: 100%;
+}
+
+.button-wrapper{
+    height: 100%;
+    width: 30%;
+}
+
+.button-wrapper button{
+    height: 100%;
+    width: 25%;
+}
