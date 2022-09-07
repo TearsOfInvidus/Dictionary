@@ -3,6 +3,7 @@
     width: 50%;
     height: 800px;
     overflow: scroll;
+    display: none;
 }
 .pairs-wrapper::-webkit-scrollbar {
     display: none;
