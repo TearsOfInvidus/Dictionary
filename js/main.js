@@ -10,13 +10,14 @@ const nextBtn = document.getElementsByClassName('next-btn')[0]
 const saveBtn = document.getElementById('save-pair-btn')
 const readBtn = document.getElementById('read-pair-btn')
 const push = document.getElementById('push-pair-btn')
+const cardWrapper = document.querySelector('.card-wrapper')
 
 //массив пар
-let pairs;
+let pairs = [];
 !localStorage.pairs ? pairs = [] : pairs = JSON.parse(localStorage.getItem('pairs'));
 
 //массив сета
-let currentSet;
+let currentSet = [];
 !localStorage.set ? currentSet = [] : currentSet = JSON.parse(localStorage.getItem('currentSet'));
 
 let pairItemElements = [];
@@ -44,7 +45,7 @@ const createTemplate = (pair, index) => {
 //заполнение html
 const fillHtmlList = () => {
     pairsWrapper.innerHTML = '';
-    if(pairs.lenght != 0) {
+    if(pairs.length > 0) {
         pairs.forEach((item, index) => {
             pairsWrapper.innerHTML += createTemplate(item, index);
         });
@@ -58,6 +59,7 @@ fillHtmlList();
 const updateLocal = () => {
     localStorage.setItem('pairs', JSON.stringify(pairs));
     localStorage.setItem('currentSet', JSON.stringify(currentSet));
+    localStorage.setItem('sets', JSON.stringify(sets));
     //console.log('tut')
 }
 
@@ -85,6 +87,21 @@ const checkPair = index => {
     updateLocal();
     fillHtmlList();
 }
+
+/* 
+//запись currentSet
+function setCurrentSet () {
+    currentSet = [];
+
+    if(pairs.lenght != 0) {
+        pairs.forEach((item) => {
+            if(item.checked == true) {
+                currentSet.push(item);
+            }
+        });
+    }
+}
+ */
 
 //Удаление пары
 const deletePair = index => {
@@ -120,33 +137,16 @@ card.addEventListener('click',() => {
 
 //переход к словарю
 toDictionary.addEventListener('click',() => {
-    const cardWrapper = document.querySelector('.card-wrapper')
-    //console.log(cardWrapper.style.display)
-    if(cardWrapper.style.display == '' || cardWrapper.style.display == 'flex') {
-        
+    if(pairsWrapper.style.display == '' || pairsWrapper.style.display == 'none') {
         cardWrapper.style.display = 'none'
-        pairsWrapper.style.display = 'block' 
+        setsWrapper.style.display = 'none'
+        pairsWrapper.style.display = 'block'
     }else{
-        pairsWrapper.style.display = 'none'
         cardWrapper.style.display = 'flex'
-    }    
-})
-
-//заполнение set
-/* addSet.addEventListener('click', () => { 
-
-    set = [];
-
-    if(pairs.lenght != 0) {
-        pairs.forEach((item) => {
-            if(item.checked == true) {
-                set.push(item);
-            }
-        });
+        setsWrapper.style.display = 'none'
+        pairsWrapper.style.display = 'none'
     }
-
-    updateLocal();
-}) */
+})
 
 //Получение случайного целого числа
 function getRandomInt(min, max) {
@@ -163,6 +163,9 @@ function setPairToCard(pair) {
 
 //клик по кнопке next
 nextBtn.addEventListener('click', () => {
+    
+    currentSet = JSON.parse(localStorage.getItem('currentSet'))    
+
     setPairToCard(currentSet[getRandomInt(0, currentSet.length)])
 
     if(card.style.transform == '') {
@@ -208,8 +211,6 @@ function readFile(object) {
   }
 
 readBtn.addEventListener('change', () => {
-    //let json = '[{"word":"わたし","translation":"Я","checked":true},{"word":"あなた","translation":"ВЫ","checked":true},{"word":"","translation":"","checked":false},{"word":"","translation":"","checked":false}]'
-
     readFile(readBtn)
 
     setTimeout(() => {

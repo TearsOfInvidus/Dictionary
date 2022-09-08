@@ -7,7 +7,7 @@
 }
 .pairs-wrapper::-webkit-scrollbar {
     display: none;
-  }
+}
 
 .pair-item{
     display: flex;

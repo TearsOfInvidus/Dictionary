@@ -1,6 +1,22 @@
 const setsWrapper = document.querySelector('.sets-wrapper')
+const setsBtn = document.getElementById('set-btn')
 
-let sets = [];
+//переход в сеты
+setsBtn.addEventListener('click', () => {
+    if(setsWrapper.style.display == '' || setsWrapper.style.display == 'none') {
+        cardWrapper.style.display = 'none'
+        pairsWrapper.style.display = 'none'
+        setsWrapper.style.display = 'block'
+    }else{
+        cardWrapper.style.display = 'flex'
+        pairsWrapper.style.display = 'none'
+        setsWrapper.style.display = 'none'
+    }
+})
+
+let sets;
+!localStorage.sets ? sets = [] : sets = JSON.parse(localStorage.getItem('sets'));
+
 let setsElements = [];
 
 //кнопка set
@@ -8,7 +24,7 @@ let setBtn = document.getElementById('add-set-btn');
 setBtn.addEventListener('click', () => {
     //создание нового сета и добавление в массив
     sets.push(new Set('ttt', JSON.parse(localStorage.getItem('currentSet'))))
-    console.log(sets.length)
+    updateLocal();
     fillHtmlListSets()
 })
 
@@ -19,14 +35,15 @@ function Set(name = 'name', currentSet = []) {
 }
  
 //создание html set-item
-const createTemplateSets = (set, index) => {
+const createTemplateSets = (set, index, text) => {
     return `
         <div class="set-item">
             <div class="WoTrBlock">
-                <div class="WoTrBlock-item">わたし / Я</div>
+                ${text}
             </div>
-            <div class="buttons">
-                <button class="btn-delete" onclick="deleteSet(${index})">Delete</button>
+            <div class="buttons set-buttons">
+                <button class="set-button" onclick="setCurrentSetFromSet(${index})">Set</button>
+                <button class="btn-delete set-button" onclick="deleteSet(${index})">Delete</button>
             </div>
         </div>
     `
@@ -38,7 +55,12 @@ const fillHtmlListSets = () => {
     setsWrapper.innerHTML = '';
     if(sets.length > 0) {
         sets.forEach((item, index) => {
-            setsWrapper.innerHTML += createTemplateSets(item, index);
+            let text=''
+            for(let i = 0; i < item.currentSet.length; i++){
+                text += item.currentSet[i].word + ' / '
+                text += item.currentSet[i].translation + ' <br>'
+            }
+            setsWrapper.innerHTML += createTemplateSets(item, index, text);
         });
         setsElements = document.querySelectorAll('.set-item')
     }
@@ -48,5 +70,12 @@ fillHtmlListSets();
 //Удаление сета
 const deleteSet = index => {
     sets.splice(index, 1);
+    updateLocal();
     fillHtmlListSets();
+}
+
+function setCurrentSetFromSet(index) {
+    currentSet = JSON.parse(JSON.stringify(sets[index].currentSet));
+    console.log(currentSet)
+    updateLocal();
 }

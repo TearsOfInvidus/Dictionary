@@ -1,7 +1,6 @@
 .card-wrapper{
-    visibility: hidden;
-    display:none;
     
+    display:flex; 
     position: relative;
     justify-content: center;
     align-items: center;
