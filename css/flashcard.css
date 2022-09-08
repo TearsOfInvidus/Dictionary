@@ -1,10 +1,13 @@
 .card-wrapper{
+    visibility: hidden;
+    display:none;
+    
     position: relative;
-    display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
     height: calc(100vh - 85px);;
+    
 }
 
 .flashcard{
@@ -35,9 +38,7 @@
     transform: rotateY(180deg);
 }
 
-.isFlippedY{
-    transform: rotateY(180deg);
-}
+
 
 .next-btn{
     position: absolute;

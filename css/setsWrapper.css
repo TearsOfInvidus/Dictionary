@@ -1,0 +1,26 @@
+.sets-wrapper{
+    margin-top: 20px;
+    width: 50%;
+    height: 800px;
+    overflow: scroll;
+}
+
+.set-item{
+    display: flex;
+    justify-content: space-between;
+    background-color: white;
+    padding: 5px;
+    min-height: 40px;
+    margin-top: 10px;
+    border-radius: 5px;
+}
+
+.WoTrBlock{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    min-height: 100%;
+    width: 80%;
+    font-size: 16px;
+}

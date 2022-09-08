@@ -21,8 +21,6 @@ let currentSet;
 
 let pairItemElements = [];
 
-//let rotation = ['rotateX(0deg)','rotateY(0deg)']
-
 //Конструктор пар 
 function Pair(word, translation) {
     this.word = word;
