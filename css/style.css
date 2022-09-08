@@ -5,6 +5,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: monospace;
 }
 
 .flex-wrapper{
@@ -17,7 +18,7 @@
 }
 
 .menu{
-    width: 50%;
+    width: 80%;
     background-color: white;
     padding: 10px;
     border-radius: 5px;
@@ -48,9 +49,17 @@
     align-items: center;
     height: 100%;
     width: 30%;
+    font-size: 14px;
 }
 
-.button-wrapper button{
+.button{
     height: 100%;
     padding: 0 5px 0 5px;
+    border: 1px solid black;
+}
+
+label.button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

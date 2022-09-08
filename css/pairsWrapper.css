@@ -47,3 +47,7 @@
 .checked{
     background-color: gray;
 }
+
+.noFileButton{
+    display: none;
+}

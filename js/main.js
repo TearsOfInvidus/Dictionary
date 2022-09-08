@@ -5,17 +5,19 @@ const wordPairInput = document.getElementById('word')
 const translation = document.getElementById('translation')
 const pairsWrapper = document.querySelector('.pairs-wrapper')
 const card = document.querySelector('.flashcard')
-const addSet = document.getElementById('add-set-btn')
 const toDictionary = document.getElementById('toDictionary-btn')
 const nextBtn = document.getElementsByClassName('next-btn')[0]
+const saveBtn = document.getElementById('save-pair-btn')
+const readBtn = document.getElementById('read-pair-btn')
+const push = document.getElementById('push-pair-btn')
 
 //массив пар
 let pairs;
 !localStorage.pairs ? pairs = [] : pairs = JSON.parse(localStorage.getItem('pairs'));
 
 //массив сета
-let set;
-!localStorage.set ? set = [] : set = JSON.parse(localStorage.getItem('set'));
+let currentSet;
+!localStorage.set ? currentSet = [] : currentSet = JSON.parse(localStorage.getItem('currentSet'));
 
 let pairItemElements = [];
 
@@ -28,7 +30,7 @@ function Pair(word, translation) {
     this.checked = false;
 }
 
-//создание html
+//создание html pair-item
 const createTemplate = (pair, index) => {
     return `
         <div class="pair-item ${pair.checked ? 'checked' : ''}">
@@ -57,8 +59,8 @@ fillHtmlList();
 //обновление localStorage
 const updateLocal = () => {
     localStorage.setItem('pairs', JSON.stringify(pairs));
-    localStorage.setItem('set', JSON.stringify(set));
-    console.log('tut')
+    localStorage.setItem('currentSet', JSON.stringify(currentSet));
+    //console.log('tut')
 }
 
 //отмечает пару
@@ -70,6 +72,18 @@ const checkPair = index => {
     }else{
         pairItemElements[index].classlist -= 'checked'
     }
+
+    currentSet = [];
+
+    if(pairs.lenght != 0) {
+        pairs.forEach((item) => {
+            if(item.checked == true) {
+                currentSet.push(item);
+            }
+        });
+    }
+
+
     updateLocal();
     fillHtmlList();
 }
@@ -77,6 +91,7 @@ const checkPair = index => {
 //Удаление пары
 const deletePair = index => {
     pairs.splice(index, 1);
+    currentSet.splice(index, 1);
     updateLocal();
     fillHtmlList();
 }
@@ -120,7 +135,7 @@ toDictionary.addEventListener('click',() => {
 })
 
 //заполнение set
-addSet.addEventListener('click', () => { 
+/* addSet.addEventListener('click', () => { 
 
     set = [];
 
@@ -133,7 +148,7 @@ addSet.addEventListener('click', () => {
     }
 
     updateLocal();
-})
+}) */
 
 //Получение случайного целого числа
 function getRandomInt(min, max) {
@@ -150,7 +165,7 @@ function setPairToCard(pair) {
 
 //клик по кнопке next
 nextBtn.addEventListener('click', () => {
-    setPairToCard(set[getRandomInt(0, set.length)])
+    setPairToCard(currentSet[getRandomInt(0, currentSet.length)])
 
     if(card.style.transform == '') {
         card.style.transform = 'rotateX(0deg) rotateY(0deg)'
@@ -165,3 +180,74 @@ nextBtn.addEventListener('click', () => {
     }
 
 })
+
+//скачивание файла 
+function download(content, fileName, contentType) {
+    var a = document.createElement("a");
+    var file = new Blob([content], {type: contentType});
+    a.href = URL.createObjectURL(file);
+    a.download = fileName;
+    a.click();
+}
+
+//сохранение пар в json
+saveBtn.addEventListener('click', () => {
+    download(JSON.stringify(pairs), 'pairs.txt', 'text/plain');
+})
+
+//чтение файла
+let json;
+
+function readFile(object) {
+    let file = object.files[0]
+    let reader = new FileReader()
+
+    reader.onload = function() {
+        json = reader.result
+        return (reader.result)
+    }
+    reader.readAsText(file)
+  }
+
+readBtn.addEventListener('change', () => {
+    //let json = '[{"word":"わたし","translation":"Я","checked":true},{"word":"あなた","translation":"ВЫ","checked":true},{"word":"","translation":"","checked":false},{"word":"","translation":"","checked":false}]'
+
+    readFile(readBtn)
+
+    setTimeout(() => {
+        pairs = JSON.parse(json)
+        updateLocal()
+        fillHtmlList()
+    },2000)
+})
+
+//Чтение пар из файла и добавление к существующим
+push.addEventListener('change', () => {
+    readFile(push)
+
+    setTimeout(() => {
+        let newPairs = parsePairs(json)
+        console.log(newPairs)
+
+        for(let i = 0; i < newPairs.length; i++) {
+            pairs.push(newPairs[i])
+        }
+
+        updateLocal();
+        fillHtmlList();
+    },2000)
+})
+
+//Парсинг слов 
+function parsePairs (text) {
+    let textPairs = [];
+    textPairs = text.split('\n');  
+    let newPairs = [];
+
+
+    for(let i = 0; i < textPairs.length; i++) {
+        newPairs[i] = new Pair(textPairs[i].split('\t')[0], textPairs[i].split('\t')[1]);
+        //console.log(newPairs)
+    }
+    return newPairs;
+}
