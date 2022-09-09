@@ -23,7 +23,7 @@ let setsElements = [];
 let setBtn = document.getElementById('add-set-btn');
 setBtn.addEventListener('click', () => {
     //создание нового сета и добавление в массив
-    sets.push(new Set('ttt', JSON.parse(localStorage.getItem('currentSet'))))
+    sets.push(new Set(wordPairInput.value, JSON.parse(localStorage.getItem('currentSet'))))
     updateLocal();
     fillHtmlListSets()
 })
@@ -38,6 +38,7 @@ function Set(name = 'name', currentSet = []) {
 const createTemplateSets = (set, index, text) => {
     return `
         <div class="set-item">
+            <h2 class="set-item-header">${set.name}</h2>
             <div class="WoTrBlock">
                 ${text}
             </div>

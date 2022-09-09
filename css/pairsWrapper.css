@@ -1,5 +1,4 @@
 .pairs-wrapper{
-    margin-top: 20px;
     width: 50%;
     height: 800px;
     overflow: scroll;
@@ -15,7 +14,7 @@
     background-color: white;
     padding: 5px;
     height: 40px;
-    margin-top: 10px;
+    margin-bottom: 10px;
     border-radius: 5px;
 }
 
