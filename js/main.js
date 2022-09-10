@@ -11,6 +11,7 @@ const saveBtn = document.getElementById('save-pair-btn')
 const readBtn = document.getElementById('read-pair-btn')
 const push = document.getElementById('push-pair-btn')
 const cardWrapper = document.querySelector('.card-wrapper')
+const menuBtn = document.getElementById('menu') 
 
 //массив пар
 let pairs = [];
@@ -182,6 +183,8 @@ nextBtn.addEventListener('click', () => {
 
 })
 
+let json = [];
+
 //скачивание файла 
 function download(content, fileName, contentType) {
     var a = document.createElement("a");
@@ -193,18 +196,20 @@ function download(content, fileName, contentType) {
 
 //сохранение пар в json
 saveBtn.addEventListener('click', () => {
-    download(JSON.stringify(pairs), 'pairs.txt', 'text/plain');
+    json[0] = pairs;
+    json[1] = sets;
+    json = JSON.stringify(json)
+    download(json, 'pairs.txt', 'text/plain');
 })
-
+ 
 //чтение файла
-let json;
-
 function readFile(object) {
     let file = object.files[0]
     let reader = new FileReader()
 
     reader.onload = function() {
-        json = reader.result
+        json = JSON.parse(reader.result)
+        console.log(json)
         return (reader.result)
     }
     reader.readAsText(file)
@@ -214,19 +219,22 @@ readBtn.addEventListener('change', () => {
     readFile(readBtn)
 
     setTimeout(() => {
-        pairs = JSON.parse(json)
+        console.log(json)
+        pairs = json[0]
+        sets = json[1]
         updateLocal()
         fillHtmlList()
+        fillHtmlListSets()
     },2000)
 })
 
-//Чтение пар из файла и добавление к существующим
+//Чтение файла и добавление к существующим
 push.addEventListener('change', () => {
     readFile(push)
 
     setTimeout(() => {
         let newPairs = parsePairs(json)
-        console.log(newPairs)
+        //console.log(newPairs)
 
         for(let i = 0; i < newPairs.length; i++) {
             pairs.push(newPairs[i])
