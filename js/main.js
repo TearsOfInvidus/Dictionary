@@ -5,13 +5,14 @@ const wordPairInput = document.getElementById('word')
 const translation = document.getElementById('translation')
 const pairsWrapper = document.querySelector('.pairs-wrapper')
 const card = document.querySelector('.flashcard')
-const toDictionary = document.getElementById('toDictionary-btn')
 const nextBtn = document.getElementsByClassName('next-btn')[0]
 const saveBtn = document.getElementById('save-pair-btn')
 const readBtn = document.getElementById('read-pair-btn')
 const push = document.getElementById('push-pair-btn')
 const cardWrapper = document.querySelector('.card-wrapper')
 const menuBtn = document.getElementById('menu') 
+const frontText = document.querySelector('.card-front-text')
+const setsAndPairs = document.querySelector('.setsAndPairs')
 
 //массив пар
 let pairs = [];
@@ -89,21 +90,6 @@ const checkPair = index => {
     fillHtmlList();
 }
 
-/* 
-//запись currentSet
-function setCurrentSet () {
-    currentSet = [];
-
-    if(pairs.lenght != 0) {
-        pairs.forEach((item) => {
-            if(item.checked == true) {
-                currentSet.push(item);
-            }
-        });
-    }
-}
- */
-
 //Удаление пары
 const deletePair = index => {
     pairs.splice(index, 1);
@@ -121,32 +107,21 @@ addPairBtn.addEventListener('click', () => {
     translation.value = '';
 })
 
-//поворот карточки
+//Клик по карточке
 card.addEventListener('click',() => {
-    if(card.style.transform == '') {
-        card.style.transform = 'rotateX(0deg) rotateY(0deg)'
-    }
-
-    let rotations = card.style.transform.split(' ');
-
-    if(card.style.transform.split(' ')[1] == 'rotateY(0deg)') {
-        card.style.transform = rotations[0] + ' ' + 'rotateY(180deg)'
-    }else{
-        card.style.transform = rotations[0] + ' ' + 'rotateY(0deg)'
-    }
-})
-
-//переход к словарю
-toDictionary.addEventListener('click',() => {
-    if(pairsWrapper.style.display == '' || pairsWrapper.style.display == 'none') {
-        cardWrapper.style.display = 'none'
-        setsWrapper.style.display = 'none'
-        pairsWrapper.style.display = 'block'
-    }else{
-        cardWrapper.style.display = 'flex'
-        setsWrapper.style.display = 'none'
-        pairsWrapper.style.display = 'none'
-    }
+    if(card.style.width != '90%') {
+        if(card.style.transform == '') {
+            card.style.transform = 'rotateX(0deg) rotateY(0deg)'
+        }
+    
+        let rotations = card.style.transform.split(' ');
+    
+        if(card.style.transform.split(' ')[1] == 'rotateY(0deg)') {
+            card.style.transform = rotations[0] + ' ' + 'rotateY(180deg)'
+        }else{
+            card.style.transform = rotations[0] + ' ' + 'rotateY(0deg)'
+        }
+    }  
 })
 
 //Получение случайного целого числа
@@ -158,7 +133,7 @@ function getRandomInt(min, max) {
 
 //замена текста на карточке
 function setPairToCard(pair) {
-    card.firstElementChild.textContent = pair.word
+    frontText.textContent = pair.word
     card.lastElementChild.textContent = pair.translation
 }
 
@@ -258,3 +233,26 @@ function parsePairs (text) {
     }
     return newPairs;
 }
+
+//Клик по кнопке menu
+menuBtn.addEventListener('click', () => {
+    if(pairsWrapper.style.display == '' || pairsWrapper.style.display == 'none') {
+        setsAndPairs.style.display = 'flex'
+        frontText.style.display = 'none'
+        setsWrapper.style.display = 'block'
+        pairsWrapper.style.display = 'block'
+        card.style.width = '90%'
+        card.style.height = '90%'
+        nextBtn.style.left = '105%'
+        card.style.cursor = 'default'
+    }else{
+        setsAndPairs.style.display = 'none'
+        frontText.style.display = 'block'
+        setsWrapper.style.display = 'none'
+        pairsWrapper.style.display = 'none'
+        card.style.width = '50%'
+        card.style.height = '300px'
+        nextBtn.style.left = '80%'
+        card.style.cursor = 'pointer'
+    }
+})

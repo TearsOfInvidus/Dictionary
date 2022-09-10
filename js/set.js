@@ -1,18 +1,4 @@
 const setsWrapper = document.querySelector('.sets-wrapper')
-const setsBtn = document.getElementById('set-btn')
-
-//переход в сеты
-setsBtn.addEventListener('click', () => {
-    if(setsWrapper.style.display == '' || setsWrapper.style.display == 'none') {
-        cardWrapper.style.display = 'none'
-        pairsWrapper.style.display = 'none'
-        setsWrapper.style.display = 'block'
-    }else{
-        cardWrapper.style.display = 'flex'
-        pairsWrapper.style.display = 'none'
-        setsWrapper.style.display = 'none'
-    }
-})
 
 let sets;
 !localStorage.sets ? sets = [] : sets = JSON.parse(localStorage.getItem('sets'));
