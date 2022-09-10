@@ -10,7 +10,7 @@ const saveBtn = document.getElementById('save-pair-btn')
 const readBtn = document.getElementById('read-pair-btn')
 const push = document.getElementById('push-pair-btn')
 const cardWrapper = document.querySelector('.card-wrapper')
-const menuBtn = document.getElementById('menu') 
+const menuBtn = document.getElementById('menu')
 const frontText = document.querySelector('.card-front-text')
 const setsAndPairs = document.querySelector('.setsAndPairs')
 
@@ -47,7 +47,7 @@ const createTemplate = (pair, index) => {
 //заполнение html
 const fillHtmlList = () => {
     pairsWrapper.innerHTML = '';
-    if(pairs.length > 0) {
+    if (pairs.length > 0) {
         pairs.forEach((item, index) => {
             pairsWrapper.innerHTML += createTemplate(item, index);
         });
@@ -69,17 +69,17 @@ const updateLocal = () => {
 const checkPair = index => {
     //console.log('tut')
     pairs[index].checked = !pairs[index].checked;
-    if(pairs[index].checked) {
+    if (pairs[index].checked) {
         pairItemElements[index].classlist += 'checked'
-    }else{
+    } else {
         pairItemElements[index].classlist -= 'checked'
     }
 
     currentSet = [];
 
-    if(pairs.lenght != 0) {
+    if (pairs.lenght != 0) {
         pairs.forEach((item) => {
-            if(item.checked == true) {
+            if (item.checked == true) {
                 currentSet.push(item);
             }
         });
@@ -108,20 +108,20 @@ addPairBtn.addEventListener('click', () => {
 })
 
 //Клик по карточке
-card.addEventListener('click',() => {
-    if(card.style.width != '90%') {
-        if(card.style.transform == '') {
+card.addEventListener('click', () => {
+    if (card.style.width != '90%') {
+        if (card.style.transform == '') {
             card.style.transform = 'rotateX(0deg) rotateY(0deg)'
         }
-    
+
         let rotations = card.style.transform.split(' ');
-    
-        if(card.style.transform.split(' ')[1] == 'rotateY(0deg)') {
+
+        if (card.style.transform.split(' ')[1] == 'rotateY(0deg)') {
             card.style.transform = rotations[0] + ' ' + 'rotateY(180deg)'
-        }else{
+        } else {
             card.style.transform = rotations[0] + ' ' + 'rotateY(0deg)'
         }
-    }  
+    }
 })
 
 //Получение случайного целого числа
@@ -139,31 +139,34 @@ function setPairToCard(pair) {
 
 //клик по кнопке next
 nextBtn.addEventListener('click', () => {
-    
-    currentSet = JSON.parse(localStorage.getItem('currentSet'))    
 
-    setPairToCard(currentSet[getRandomInt(0, currentSet.length)])
+    currentSet = JSON.parse(localStorage.getItem('currentSet'))
 
-    if(card.style.transform == '') {
+    if(Boolean(currentSet.length)) {
+        setPairToCard(currentSet[getRandomInt(0, currentSet.length)])
+    }
+
+    if (card.style.transform == '') {
         card.style.transform = 'rotateX(0deg) rotateY(0deg)'
     }
 
     let rotations = card.style.transform.split(' ');
 
-    if(card.style.transform.split(' ')[0] == 'rotateX(0deg)') {
+    if (card.style.transform.split(' ')[0] == 'rotateX(0deg)') {
         card.style.transform = 'rotateX(360deg)' + ' ' + rotations[1]
-    }else{
+    } else {
         card.style.transform = 'rotateX(0deg)' + ' ' + rotations[1]
     }
 
 })
 
-let json = [];
+//json для пар и сетов
+let jsonPairsAndSets = [];
 
 //скачивание файла 
 function download(content, fileName, contentType) {
     var a = document.createElement("a");
-    var file = new Blob([content], {type: contentType});
+    var file = new Blob([content], { type: contentType });
     a.href = URL.createObjectURL(file);
     a.download = fileName;
     a.click();
@@ -171,36 +174,44 @@ function download(content, fileName, contentType) {
 
 //сохранение пар в json
 saveBtn.addEventListener('click', () => {
-    json[0] = pairs;
-    json[1] = sets;
-    json = JSON.stringify(json)
-    download(json, 'pairs.txt', 'text/plain');
+    jsonPairsAndSets = []
+    jsonPairsAndSets[0] = pairs;
+    jsonPairsAndSets[1] = sets;
+    jsonPairsAndSets = JSON.stringify(jsonPairsAndSets)
+    download(jsonPairsAndSets, 'pairs.txt', 'text/plain');
 })
- 
+
+//текст прочтённого файла
+let readedText;
 //чтение файла
 function readFile(object) {
     let file = object.files[0]
     let reader = new FileReader()
 
-    reader.onload = function() {
-        json = JSON.parse(reader.result)
-        console.log(json)
-        return (reader.result)
+    reader.onload = function () {
+
+        readedText = reader.result
+
     }
     reader.readAsText(file)
-  }
+}
 
+//клик по кнопке Read
 readBtn.addEventListener('change', () => {
+
     readFile(readBtn)
 
     setTimeout(() => {
-        console.log(json)
-        pairs = json[0]
-        sets = json[1]
+        //console.log(text)
+        jsonPairsAndSets = JSON.parse(readedText)
+        pairs = jsonPairsAndSets[0]
+        sets = jsonPairsAndSets[1]
         updateLocal()
         fillHtmlList()
         fillHtmlListSets()
-    },2000)
+
+        readBtn.value = ''
+    }, 2000)
 })
 
 //Чтение файла и добавление к существующим
@@ -208,35 +219,33 @@ push.addEventListener('change', () => {
     readFile(push)
 
     setTimeout(() => {
-        let newPairs = parsePairs(json)
-        //console.log(newPairs)
+        let newPairs = parsePairs(readedText)
 
-        for(let i = 0; i < newPairs.length; i++) {
+        for (let i = 0; i < newPairs.length; i++) {
             pairs.push(newPairs[i])
         }
 
         updateLocal();
         fillHtmlList();
-    },2000)
+    }, 2000)
 })
 
 //Парсинг слов 
-function parsePairs (text) {
+function parsePairs(text) {
     let textPairs = [];
-    textPairs = text.split('\n');  
+    textPairs = text.split('\n');
     let newPairs = [];
 
 
-    for(let i = 0; i < textPairs.length; i++) {
+    for (let i = 0; i < textPairs.length; i++) {
         newPairs[i] = new Pair(textPairs[i].split('\t')[0], textPairs[i].split('\t')[1]);
-        //console.log(newPairs)
     }
     return newPairs;
 }
 
 //Клик по кнопке menu
 menuBtn.addEventListener('click', () => {
-    if(pairsWrapper.style.display == '' || pairsWrapper.style.display == 'none') {
+    if (pairsWrapper.style.display == '' || pairsWrapper.style.display == 'none') {
         setsAndPairs.style.display = 'flex'
         frontText.style.display = 'none'
         setsWrapper.style.display = 'block'
@@ -245,7 +254,7 @@ menuBtn.addEventListener('click', () => {
         card.style.height = '90%'
         nextBtn.style.left = '105%'
         card.style.cursor = 'default'
-    }else{
+    } else {
         setsAndPairs.style.display = 'none'
         frontText.style.display = 'block'
         setsWrapper.style.display = 'none'
