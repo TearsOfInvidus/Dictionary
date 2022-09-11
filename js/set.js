@@ -1,4 +1,5 @@
 const setsWrapper = document.querySelector('.sets-wrapper')
+const setName = document.getElementById('set-name')
 
 let sets;
 !localStorage.sets ? sets = [] : sets = JSON.parse(localStorage.getItem('sets'));
@@ -8,11 +9,19 @@ let setsElements = [];
 //кнопка set
 let setBtn = document.getElementById('add-set-btn');
 setBtn.addEventListener('click', () => {
-    let setName = document.getElementById('set-name').value
     //создание нового сета и добавление в массив
-    sets.push(new Set(setName, JSON.parse(localStorage.getItem('currentSet'))))
+    if(localStorage.getItem('currentSet') != null) {
+        sets.push(new Set(setName.value, JSON.parse(localStorage.getItem('currentSet'))))
+        setName.value = '';
+        updateLocal();
+        fillHtmlListSets()
+    }
+/* 
+    sets.push(new Set(setName.value, JSON.parse(localStorage.getItem('currentSet'))))
+    setName.value = '';
     updateLocal();
     fillHtmlListSets()
+     */
 })
 
 function Set(name = 'name', currentSet = []) {
@@ -67,6 +76,6 @@ const deleteSet = index => {
 
 function setCurrentSetFromSet(index) {
     currentSet = JSON.parse(JSON.stringify(sets[index].currentSet));
-    console.log(currentSet)
     updateLocal();
+    uncheckAll(pairs);
 }

@@ -270,3 +270,14 @@ menuBtn.addEventListener('click', () => {
         card.style.cursor = 'pointer'
     }
 })
+
+
+function uncheckAll (pairs) {
+    if(pairs.length > 0) {
+        for(let i  = 0; i < pairs.length; i++) {
+            pairs[i].checked = false;
+        }
+        updateLocal();
+        fillHtmlList();
+    }
+}
