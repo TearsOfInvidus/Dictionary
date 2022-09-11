@@ -26,13 +26,16 @@ const createTemplateSets = (set, index, text) => {
     return `
         <div class="set-item">
             <h2 class="set-item-header">${set.name}</h2>
-            <div class="WoTrBlock">
-                ${text}
-            </div>
-            <div class="buttons set-buttons">
-                <button class="set-button" onclick="setCurrentSetFromSet(${index})">Set</button>
-                <button class="btn-delete set-button" onclick="deleteSet(${index})">Delete</button>
-            </div>
+
+            <div class="set-item-TB">
+                <div class="WoTrBlock">
+                    ${text}
+                </div>
+                <div class="buttons set-buttons">
+                    <button class="set-button" onclick="setCurrentSetFromSet(${index})">Set</button>
+                    <button class="btn-delete set-button" onclick="deleteSet(${index})">Delete</button>
+                </div>
+            </div>  
         </div>
     `
 }
@@ -45,7 +48,7 @@ const fillHtmlListSets = () => {
         sets.forEach((item, index) => {
             let text=''
             for(let i = 0; i < item.currentSet.length; i++){
-                text += item.currentSet[i].word + ' <br> '
+                text += item.currentSet[i].word + ' / '
                 text += item.currentSet[i].translation + ' <br>'
             }
             setsWrapper.innerHTML += createTemplateSets(item, index, text);
