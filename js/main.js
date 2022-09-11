@@ -109,7 +109,7 @@ addPairBtn.addEventListener('click', () => {
 
 //Клик по карточке
 card.addEventListener('click', () => {
-    if (card.style.width != '90%') {
+    if (card.style.width != '80%') {
         if (card.style.transform == '') {
             card.style.transform = 'rotateX(0deg) rotateY(0deg)'
         }
@@ -174,6 +174,7 @@ function download(content, fileName, contentType) {
 
 //сохранение пар в json
 saveBtn.addEventListener('click', () => {
+    console.log('tut')
     jsonPairsAndSets = []
     jsonPairsAndSets[0] = pairs;
     jsonPairsAndSets[1] = sets;

@@ -8,8 +8,9 @@ let setsElements = [];
 //кнопка set
 let setBtn = document.getElementById('add-set-btn');
 setBtn.addEventListener('click', () => {
+    let setName = document.getElementById('set-name').value
     //создание нового сета и добавление в массив
-    sets.push(new Set(wordPairInput.value, JSON.parse(localStorage.getItem('currentSet'))))
+    sets.push(new Set(setName, JSON.parse(localStorage.getItem('currentSet'))))
     updateLocal();
     fillHtmlListSets()
 })
@@ -44,7 +45,7 @@ const fillHtmlListSets = () => {
         sets.forEach((item, index) => {
             let text=''
             for(let i = 0; i < item.currentSet.length; i++){
-                text += item.currentSet[i].word + ' / '
+                text += item.currentSet[i].word + ' <br> '
                 text += item.currentSet[i].translation + ' <br>'
             }
             setsWrapper.innerHTML += createTemplateSets(item, index, text);

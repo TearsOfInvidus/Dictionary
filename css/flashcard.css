@@ -82,4 +82,26 @@
 .sets , .pairs{
     width: 49%;
     height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.pairs-menu , .sets-menu{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 15px 0 15px;
+    height: 40px;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.pairs-menu-textbox{
+    height: 30px;
+    width: 38%;
+}
+
+.sets-menu-textbox{
+    height: 30px;
+    width: 76%;
 }
