@@ -202,7 +202,6 @@ readBtn.addEventListener('change', () => {
     readFile(readBtn)
 
     setTimeout(() => {
-        //console.log(text)
         jsonPairsAndSets = JSON.parse(readedText)
         pairs = jsonPairsAndSets[0]
         sets = jsonPairsAndSets[1]
@@ -245,15 +244,19 @@ function parsePairs(text) {
 
 //Клик по кнопке menu
 menuBtn.addEventListener('click', () => {
+
+    const CardMenuBtn = document.querySelector('.menu-btn')
+
     if (pairsWrapper.style.display == '' || pairsWrapper.style.display == 'none') {
         setsAndPairs.style.display = 'flex'
         frontText.style.display = 'none'
         setsWrapper.style.display = 'block'
         pairsWrapper.style.display = 'block'
-        card.style.width = '90%'
+        card.style.width = '80%'
         card.style.height = '90%'
-        nextBtn.style.left = '105%'
+        nextBtn.style.left = '95%'
         card.style.cursor = 'default'
+        CardMenuBtn.style.left = '5%'
     } else {
         setsAndPairs.style.display = 'none'
         frontText.style.display = 'block'
@@ -262,6 +265,7 @@ menuBtn.addEventListener('click', () => {
         card.style.width = '50%'
         card.style.height = '300px'
         nextBtn.style.left = '80%'
+        CardMenuBtn.style.left = '20%'
         card.style.cursor = 'pointer'
     }
 })
