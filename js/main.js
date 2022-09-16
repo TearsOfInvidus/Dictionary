@@ -227,6 +227,8 @@ push.addEventListener('change', () => {
 
         updateLocal();
         fillHtmlList();
+
+        push.value = '';
     }, 2000)
 })
 
