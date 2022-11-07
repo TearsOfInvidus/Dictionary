@@ -13,6 +13,7 @@ const cardWrapper = document.querySelector('.card-wrapper')
 const menuBtn = document.getElementById('menu')
 const frontText = document.querySelector('.card-front-text')
 const setsAndPairs = document.querySelector('.setsAndPairs')
+const backText = document.querySelector('.card-back-text')
 
 //массив пар
 let pairs = [];
@@ -133,8 +134,9 @@ function getRandomInt(min, max) {
 
 //замена текста на карточке
 function setPairToCard(pair) {
-    frontText.textContent = pair.word
-    card.lastElementChild.textContent = pair.translation
+    frontText.textContent = pair.word;
+    //card.lastElementChild.textContent = pair.translation
+    backText.textContent = pair.translation;
 }
 
 //клик по кнопке next
@@ -262,7 +264,7 @@ menuBtn.addEventListener('click', () => {
         CardMenuBtn.style.left = '5%'
     } else {
         setsAndPairs.style.display = 'none'
-        frontText.style.display = 'block'
+        frontText.style.display = 'flex'
         setsWrapper.style.display = 'none'
         pairsWrapper.style.display = 'none'
         card.style.width = '50%'
